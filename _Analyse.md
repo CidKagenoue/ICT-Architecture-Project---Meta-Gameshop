@@ -117,3 +117,54 @@ De belangrijkste workflows in het systeem zijn:
     Systeem->>Gebruiker: Toon zoekresultaten
 
 ```
+
+---
+
+## 3. Architecturale Stijlen
+
+In dit project zullen we zowel een **monolithische** als een **microservices-architectuur** overwegen en een keuze maken op basis van de vereisten en karakteristieken van het systeem.
+
+### 3.1 Monolithische Architectuur
+In een monolithische architectuur is het systeem opgebouwd als één enkele, geïntegreerde applicatie. Dit betekent dat alle componenten en functionaliteiten binnen dezelfde codebase zitten en samenwerken.
+
+**Voordelen**:
+- Eenvoudige implementatie en beheer voor kleinere systemen.
+- Minder overhead in communicatie tussen componenten.
+- Gemakkelijkere testing en debugging.
+
+**Nadelen**:
+- Moeilijker schaalbaar naarmate het aantal gebruikers toeneemt.
+- Langzamere ontwikkelingstijd door de grootte van de codebase.
+- Risico van performanceproblemen bij pieken in verkeer.
+
+**Diagram**:
+```mermaid
+graph TD;
+    A[Frontend] --> B[Backend]
+    B --> C[Database]
+
+```
+
+### 3.2 Microservices Architectuur
+In een microservices-architectuur wordt het systeem opgesplitst in kleinere, onafhankelijke services die communiceren via API’s.
+
+**Voordelen**:
+- Betere schaalbaarheid door het onafhankelijk schalen van services.
+- Flexibiliteit in technologieën (verschillende microservices kunnen in verschillende talen worden geschreven).
+- Makkelijker onderhoud en updates, doordat alleen een specifieke service hoeft te worden aangepast.
+
+**Nadelen**:
+- Complexere implementatie en beheer.
+- Meer netwerkverkeer en complexiteit door de communicatie tussen services.
+- Hogere operationele kosten door het beheren van meerdere services.
+
+**Diagram**:
+```mermaid
+graph TD;
+    A[Frontend] --> B[User Service]
+    A --> C[Game Service]
+    A --> D[Price History Service]
+    B --> E[User Database]
+    C --> F[Game Database]
+    D --> G[Price History Database]
+```
