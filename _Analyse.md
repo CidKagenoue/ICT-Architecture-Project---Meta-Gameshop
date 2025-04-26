@@ -168,3 +168,83 @@ graph TD;
     C --> F[Game Database]
     D --> G[Price History Database]
 ```
+
+---
+
+## 4. Architecturale Beslissingen (ADR's)
+
+## ADR 1: Keuze voor Microservices Architectuur
+
+### Context
+Het systeem zal verschillende, van elkaar onafhankelijke functionaliteiten moeten ondersteunen, zoals gebruikersbeheer, game-informatie, prijsgeschiedenis en aanbevelingen. Elk van deze functionaliteiten kan onafhankelijk schalen, en ze zullen communiceren met externe API’s, wat een flexibele en modulaire architectuur vereist.
+
+### Keuze
+Microservices-architectuur.
+
+### Alternatieven
+Een monolithische benadering werd overwogen, waarbij alle componenten binnen één applicatie zouden draaien. Dit zou eenvoudiger zijn om te implementeren, maar biedt niet de schaalbaarheid en flexibiliteit die nodig is voor pieken in verkeer en veranderingen in de externe API’s.
+
+### Reden voor keuze
+Microservices bieden de mogelijkheid om specifieke functionaliteiten onafhankelijk van elkaar te schalen. Dit is vooral belangrijk voor het toekomstige verkeer en de veranderende marktomstandigheden. Elke service kan worden geüpdatet zonder de andere te verstoren, en het systeem blijft flexibel en onderhoudsvriendelijk.
+
+### Gevolgen
+Het gebruik van microservices betekent dat we verschillende technologieën kunnen gebruiken voor verschillende services, zoals Node.js voor gebruikersbeheer en Python voor prijsgeschiedenis. Dit kan de leercurve verhogen, maar biedt tegelijkertijd meer schaalvoordelen.
+
+### Beslissing
+```mermaid
+graph LR;
+    A[Monolithisch] --> B[Hogere schaalbaarheid nodig?]
+    B -->|Ja| C[Microservices]
+    B -->|Nee| D[Monolithisch behouden]
+```
+
+---
+
+## ADR 2: Keuze voor Kubernetes voor Orkestratie
+
+### Context
+Het systeem zal uit meerdere microservices bestaan die op verschillende containers moeten draaien. De complexiteit van het beheren van deze containers en de mogelijkheid om automatisch te schalen, vereist een orkestratie-oplossing.
+
+### Keuze
+Kubernetes voor orkestratie.
+
+### Alternatieven
+Docker Swarm werd als alternatief overwogen, maar Kubernetes biedt meer geavanceerde functionaliteit zoals automatische schaling, uitgebreide monitoring en een groter ecosysteem van tools. Andere orkestratietools zoals Apache Mesos zijn ook beschikbaar, maar Kubernetes heeft een groter gebruikersnetwerk en een breed scala aan integraties.
+
+### Reden voor keuze
+Kubernetes is de standaard voor containerorkestratie en biedt uitgebreide ondersteuning voor het schalen van microservices, evenals tools voor monitoring, logging en fouttolerantie. Het stelt ons in staat om services automatisch te schalen op basis van de belasting, wat essentieel is voor de beschikbaarheid en veerkracht van het systeem.
+
+### Gevolgen
+Het gebruik van Kubernetes vereist dat we vertrouwd raken met de Kubernetes-configuratie en de tools die daarbij horen. We moeten mogelijk extra middelen inzetten voor de ontwikkeling en beheer van de Kubernetes-cluster, maar de voordelen van schaalbaarheid en fouttolerantie wegen op tegen deze kosten.
+
+
+---
+
+# ADR 3: Keuze voor MongoDB als Database
+
+## Context
+Het systeem vereist een database die goed om kan gaan met ongestructureerde data, zoals game-informatie, prijsgeschiedenis, en gebruikersbeoordelingen. Daarnaast moeten we kunnen schalen afhankelijk van het verkeer en de hoeveelheid data.
+
+## Keuze
+MongoDB als database.
+
+## Alternatieven
+Relationale databases zoals PostgreSQL en MySQL werden overwogen, maar deze bieden niet dezelfde flexibiliteit voor het omgaan met ongestructureerde data en het schalen van grote hoeveelheden data zoals MongoDB dat doet.
+
+## Reden voor keuze
+MongoDB is een document-georiënteerde database die goed omgaat met ongestructureerde data. Het biedt flexibele schema's en uitstekende schaalbaarheid voor grote hoeveelheden data, wat essentieel is voor de groei van het systeem. Daarnaast ondersteunt het native JSON-formaten, wat goed past bij de aard van de gegevens die we willen opslaan.
+
+## Gevolgen
+Het gebruik van MongoDB betekent dat we moeten zorgen voor een schema-ontwerp dat goed omgaat met document-georiënteerde gegevens. We moeten mogelijk ook extra tools gebruiken voor databasebeheer en performance-optimalisatie.
+
+```mermaid
+graph TD;
+    A[MongoDB] --> B[Flexibele schema's];
+    A --> C[Uitstekende schaalbaarheid];
+    A --> D[Omgaan met ongestructureerde data];
+    A --> E[JSON-formaten ondersteunen];
+    B --> F[Geschikt voor grote hoeveelheden data];
+    C --> G[Schaalbaar naar behoefte];
+    D --> H[Meer ruimte voor variërende dataformaten];
+```
+---
