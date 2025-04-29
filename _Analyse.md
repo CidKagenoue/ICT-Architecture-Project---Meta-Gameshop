@@ -248,3 +248,116 @@ graph TD;
     D --> H[Meer ruimte voor variërende dataformaten];
 ```
 ---
+
+# ADR 4: Keuze voor JWT voor Authenticatie
+
+## Context
+Het systeem vereist een robuuste en veilige manier om gebruikers te authenticeren en autoriseren. We willen een oplossing die schaalbaar is en de flexibiliteit biedt om toegang te regelen zonder extra overhead van sessiebeheer.
+
+## Keuze
+JWT (JSON Web Token) voor authenticatie.
+
+## Alternatieven
+Andere alternatieven zoals OAuth 2.0 werden overwogen, maar JWT biedt een eenvoudiger en lichter alternatief voor het beheer van gebruikerssessies. OAuth 2.0 kan complexer zijn en biedt meer mogelijkheden dan noodzakelijk is voor deze specifieke use case.
+
+## Reden voor keuze
+JWT is een stateless oplossing, wat betekent dat de server geen sessie-informatie hoeft bij te houden. Dit maakt het schaalbaarder en efficiënter, vooral in een gedistribueerde omgeving met microservices. Bovendien is JWT lichtgewicht en veilig, wat zorgt voor een snelle en veilige gebruikersauthenticatie.
+
+## Gevolgen
+Het gebruik van JWT betekent dat we een systeem moeten ontwikkelen voor het genereren en valideren van tokens. We moeten ook zorgen voor een goede beveiliging van de private sleutel en een veilige opslag van de tokens op de clientzijde.
+
+```mermaid
+graph TD;
+    A[JWT] --> B[Stateless authenticatie];
+    A --> C[Lichtgewicht en snel];
+    A --> D[Beveiliging via tokens];
+    A --> E[Schaalbaarheid verhoogd];
+    B --> F[Geen sessiebeheer nodig];
+    C --> G[Snelle communicatie];
+    D --> H[Veilige private sleutel voor validatie];
+    E --> I[Geschikt voor microservices];
+```
+---
+
+
+# ADR 5: Keuze voor Monitoring met Prometheus en Grafana
+
+## Context
+Het systeem zal meerdere microservices bevatten, die nauwlettend gemonitord moeten worden om de prestaties en beschikbaarheid te waarborgen. We hebben een oplossing nodig die eenvoudig te integreren is met Kubernetes en in staat is om met meerdere services en containers te werken.
+
+## Keuze
+Prometheus voor monitoring en Grafana voor visualisatie van de verzamelde gegevens.
+
+## Alternatieven
+Andere monitoringtools zoals Datadog en New Relic werden overwogen, maar deze vereisen een licentie en bieden mogelijk meer functionaliteit dan noodzakelijk is voor onze behoeften. Prometheus en Grafana bieden een open-source oplossing die gemakkelijk kan worden geïntegreerd met Kubernetes.
+
+## Reden voor keuze
+Prometheus is een krachtige open-source tool die goed integreert met Kubernetes en automatisch metrics verzamelt van de microservices. Het biedt flexibele querymogelijkheden en kan gemakkelijk worden geconfigureerd om bepaalde gebeurtenissen of afwijkingen in de prestaties te volgen. Grafana wordt gebruikt voor de visualisatie van deze gegevens en biedt een overzichtelijke interface om de gezondheid van het systeem te monitoren.
+
+## Gevolgen
+De implementatie van Prometheus en Grafana vereist dat we metrics verzamelen van elke microservice en deze configureren om te communiceren met Prometheus. We moeten ook dashboards ontwerpen in Grafana voor het monitoren van kritieke systeemparameters. Dit kan extra configuratiewerk met zich meebrengen, maar de voordelen van gedetailleerde monitoring en snelle probleemoplossing wegen op tegen de implementatiekosten.
+
+```mermaid
+graph TD;
+    A[Prometheus] --> B[Metrics verzamelen];
+    A --> C[Integratie met Kubernetes];
+    C --> D[Automatische data-invoer van microservices];
+    B --> E[Flexibele querymogelijkheden];
+    E --> F[Identificatie van prestatieproblemen];
+    F --> G[Snelle foutdetectie];
+    A --> H[Grafana voor visualisatie];
+    H --> I[Gebruiksvriendelijke dashboards];
+    I --> J[Overzichtelijke weergave van systeemgezondheid];
+ ```
+ ---
+
+## 5. Fysieke Architecturen en Mapping
+
+In dit deel bespreken we de fysieke architectuur van het systeem en hoe de logische componenten daarop gemapt worden.
+
+### 5.1 Fysieke Architectuur – Monolithische Benadering
+
+- **Frontend**: Webapplicatie (ReactJS) die communiceert met een backend.
+- **Backend**: Een monolithische applicatie (bijvoorbeeld in Node.js) die alle services aanbiedt.
+- **Database**: Relationale database voor het opslaan van gebruikersgegevens, game-informatie, prijsgeschiedenis, etc.
+
+### 5.2 Fysieke Architectuur – Microservices Benadering
+
+- **Frontend**: Webapplicatie (ReactJS).
+- **Microservices**: Gescheiden services voor gebruikersbeheer, gamebeheer, prijsgeschiedenis, aanbevelingen, etc.
+- **Database**: Gedistribueerde databases voor elke microservice (bijv. MongoDB voor gebruikersbeheer, MySQL voor game-informatie).
+---
+
+## 6. Microservices Proof of Concept met Kubernetes
+
+In dit gedeelte gaan we de implementatie van microservices uitleggen, met behulp van Kubernetes voor orkestratie. We zullen een minimalistisch voorbeeld creëren voor elke microservice en deze in containers draaien, met authenticatie, monitoring en fouttolerantie.
+
+### 6.1 Microservice-1: Gebruikersbeheer
+- **Beschrijving**: Beheer van gebruikersprofielen, inloggegevens en voorkeuren.
+- **Technologie**: Node.js + Express, MongoDB
+- **Authenticatie**: JWT + OAuth2
+- **Monitoring**: Prometheus + Grafana
+
+### 6.2 Microservice-2: Prijsgeschiedenis
+- **Beschrijving**: Houdt de prijsgeschiedenis van games bij en verstuurt meldingen.
+- **Technologie**: Python + Flask, PostgreSQL
+- **Monitoring**: Prometheus + Grafana
+
+### 6.3 Diagram
+```mermaid
+graph TD;
+    A[Gebruikersbeheer Microservice] --> B[Kubernetes Cluster]
+    C[Prijsgeschiedenis Microservice] --> B
+    B --> D[Prometheus Monitoring]
+    B --> E[Grafana Dashboard]
+```
+
+---
+
+## 7. Toelichting en Slotbeschouwing
+
+In de toelichting wordt het gekozen ontwerp gepresenteerd, met aandacht voor de gemaakte keuzes en hoe deze bijdragen aan de behoeften van het project. Daarnaast wordt het proof-of-concept gepresenteerd en geanalyseerd.
+
+---
+
+
