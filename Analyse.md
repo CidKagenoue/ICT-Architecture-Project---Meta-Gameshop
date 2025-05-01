@@ -144,6 +144,33 @@ graph TD;
     B --> C[Database]
 
 ```
+---
+### 3.1.1 Verantwoording keuze voor Layered Monolithic Architecture
+
+Voor de monolithische implementatie van het Meta-Gameshop systeem kies ik specifiek voor een Layered Monolithic Architecture. Omdat deze architecturale stijl de applicatie verdeeld in verschillende horizontale lagen die elk een specifieke verantwoordelijkheid hebben:
+
+1. **Presentatielaag**: De gebruikersinterface (React frontend)
+2. **API-laag**: RESTful endpoints voor communicatie met de UI
+3. **Service-laag**: Bedrijfslogica, gegevensverwerkingen en integraties
+4. **Data-toegangslaag**: Database-interacties en gegevensopslag
+5. **Infrastructuurlaag**: logging, authenticatie en monitoring
+
+**Waarom Layered Monolith voor dit project:**
+
+1. **Initiële ontwikkelsnelheid**: Voor een kleine-project met weining tijd zoals de Meta-Gameshop is het belangrijk. Een layered monolith kan sneller worden ontwikkeld dan microservices omdat er geen complexe service of gedistribueerde communicatie nodig is.
+
+2. **Eenvoudiger debuggen en testen**: De gelaagdheid biedt structuur, maar houdt alle functionaliteit binnen één codebase, wat het testen en debuggen eenvoudigt maakt.
+
+3. **Gematigde complexiteit**: Voor een jong team biedt deze architectuur een balans tussen overzichtelijkheid en schaalbaarheid.
+
+4. **Toekomstige migratiemogelijkheden**: Door de gelaagde structuur is het later mogelijk om specifieke lagen of modules uit te breken naar microservices wanneer dat nodig blijkt.
+
+**Mitigatie van monolithische nadelen:**
+
+* **Schaalbaarheid**: Hoewel minder flexibel schaalbaar dan microservices, kan een layered monolith horizontaal geschaald worden met load balancers.
+* **Codebeheer**: Door duidelijke modulaire grenzen te handhaven binnen de monolith, minimaliseren we de nadelen van een grote codebase.
+* **Technologie-lock-in**: We standaardiseren op één technologiestack (Node.js/Express) maar houden wel de codebasis modulair voor toekomstige migratie.
+---
 
 ### 3.2 Microservices Architectuur
 In een microservices-architectuur wordt het systeem opgesplitst in kleinere, onafhankelijke services die communiceren via API’s.
@@ -353,11 +380,4 @@ graph TD;
 ```
 
 ---
-
-## 7. Toelichting en Slotbeschouwing
-
-In de toelichting wordt het gekozen ontwerp gepresenteerd, met aandacht voor de gemaakte keuzes en hoe deze bijdragen aan de behoeften van het project. Daarnaast wordt het proof-of-concept gepresenteerd en geanalyseerd.
-
----
-
 
